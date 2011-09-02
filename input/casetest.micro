@@ -1,0 +1,25 @@
+PROGRAM casetest
+BEGIN
+
+     STRING case1 := "Case 1!";
+     STRING case2 := "Case 2!";
+     STRING default := "Default!";
+     
+     INT i, j, k;
+     
+     i = 10;
+     j = 20;
+     READ(k);
+     
+     CASE
+     (k < i)
+          WRITE(case1);
+     BREAK
+     (k < j)
+          WRITE(case2);
+     BREAK
+     DEFAULT
+          WRITE(default);
+     ENDCASE
+
+END
