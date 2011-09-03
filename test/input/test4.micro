@@ -1,0 +1,23 @@
+PROGRAM test
+BEGIN
+	INT i;
+	FLOAT x,y;
+	STRING s1 := "string";
+
+	--PROTO INT foo(INT a, FLOAT b);
+	--PROTO VOID main();
+	FUNCTION INT foo
+	BEGIN
+	write (x);
+	read (y);
+	c=a+b;
+	b;
+	RETURN i;
+  END
+
+	FUNCTION VOID main()
+	BEGIN 
+	
+	END
+	
+END
