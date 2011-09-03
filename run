@@ -1,5 +1,9 @@
 #! /bin/bash
-java -cp lib/antlr.jar:classes Micro test/input/$1".micro";
-more test/output/"$1".parser;
+for i in {1..17}
+do
+	echo $i "===============";
+	java -cp lib/antlr.jar:classes Micro test/input/"test"$i".micro";
+	more test/output/test"$i".parser;
+done
 #echo "Input: ";
 #more test/input/"$1".micro;

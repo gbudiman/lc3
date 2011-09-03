@@ -1,11 +1,26 @@
 grammar MicroParser;
-
-@ruleCatch {
-	catch (RecognitionException e) {
-		throw e;
+@rulecatch {
+	catch (RecognitionException re) {
+		throw re;
 	}
 }
-
+@header {
+	import java.util.LinkedList;
+}
+@members {
+	private List<String> errors = new LinkedList<String>();
+	public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
+		String hdr = getErrorHeader(e);
+		String msg = getErrorMessage(e, tokenNames);
+		errors.add(hdr + " " + msg);
+	}
+	public List<String> getErrors() {
+		return errors;
+	}
+	public int getErrorCount() {
+		return errors.size();
+	}
+}
 /* Program */
 program 	: 'PROGRAM' id 'BEGIN' pgm_body 'END';
 id		: IDENTIFIER;
