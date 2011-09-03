@@ -1,3 +1,5 @@
 #! /bin/bash
-
-java -cp lib/antlr.jar:classes Micro "$1";
+java -cp lib/antlr.jar:classes Micro test/input/$1".micro";
+more test/output/"$1".parser;
+#echo "Input: ";
+#more test/input/"$1".micro;
