@@ -1,3 +1,1 @@
-Gloria Budiman - gbudiman
-Compile: simply run make
-Execute: java -cp lib/antlr.jar:classes Micro [input.txt]
+gbudiman
