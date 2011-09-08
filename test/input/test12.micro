@@ -2,7 +2,6 @@ PROGRAM test BEGIN
 	INT a,b,c;
 	FLOAT x,y,z;
 	STRING h,j,k;
-	--PROTO INT main();
 	FUNCTION INT main() BEGIN
 	WRITE (a);
 	READ (b);

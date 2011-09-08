@@ -4,8 +4,6 @@ BEGIN
 	FLOAT x,y;
 	STRING s1 := "string";
 
-	--PROTO INT foo(INT a, FLOAT b);
-	--PROTO VOID main();
 	FUNCTION INT foo
 	BEGIN
 	write (x);

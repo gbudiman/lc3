@@ -74,7 +74,7 @@ mulop		: '*' | '/';
 if_stmt		: 'IF' '(' cond ')' 'THEN' stmt_list else_part 'ENDIF';
 else_part	: ('ELSE' stmt_list)*;
 cond		: expr compop expr;
-compop		: '<' | '>' | '=' | '!';
+compop		: '<' | '>' | '=' | '!=';
 do_stmt		: 'DO' stmt_list 'WHILE' '(' cond ')' ';';
 
 fragment DIGIT          : '0'..'9';
@@ -103,7 +103,7 @@ KEYWORD         : 'PROGRAM'
                 | 'INT' 
                 | 'VOID'
                 | 'STRING';
-OPERATOR        : ':='
+/*OPERATOR        : ':='
                 | '+'
                 | '-'
                 | '*'
@@ -115,7 +115,7 @@ OPERATOR        : ':='
                 | '('
                 | ')'
                 | ';'
-                | ',';
+                | ',';*/
 INTLITERAL      : (DIGIT)+;
 FLOATLITERAL    : (DIGIT)*('.'(DIGIT)+);
 STRINGLITERAL   : ('"'(~('\r'|'\n'|'"'))*'"');

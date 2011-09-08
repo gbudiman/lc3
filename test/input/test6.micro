@@ -1,8 +1,6 @@
 PROGRAM test
 BEGIN
 	INT a,b,c,x,y,z,h,j,k;
-	--PROTO VOID printout (INT a,INT b,INT c);
-	--PROTO INT main();
 	FUNCTION VOID printout (INT a,INT b,INT c)
 	BEGIN
 		WRITE (a);
@@ -17,15 +15,10 @@ BEGIN
 		h:=0;
 	ELSE
 
---	j:=1;
---	REPEAT
---		a := j;
---		j := j + 1;		
---	UNTIL(j>10);
-
-		FOR (j:=1; j<11; j:=j+1)
-			a := j;
-		ENDFOR
+	DO
+		a := j;
+		j := j + 1;		
+	WHILE(j<11);
 
 	ENDIF
 	RETURN a+b;

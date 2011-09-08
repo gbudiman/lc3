@@ -1,8 +1,6 @@
 PROGRAM test
 BEGIN
 	INT a,b,c,x,y,z,h,j,k;
-	--PROTO VOID printout (INT a,INT b,INT c);
-	--PROTO INT main();
 	FUNCTION VOID printout (INT a,INT b,INT c)
 	BEGIN
 		WRITE (a);

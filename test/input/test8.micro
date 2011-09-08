@@ -19,23 +19,12 @@ BEGIN
 		dfx := 2.0*x1;
 		x2 := x1 - fx/dfx;
 
---	REPEAT
---		x1 := x2;
---		fx := x1*x1 - n;
---		dfx := 2.0*x1;
---		x2 := x1 - fx/dfx;
---	UNTIL (x1-x2 < error);
-
+	DO
 		x1 := x2;
 		fx := x1*x1 - n;
 		dfx := 2.0*x1;
 		x2 := x1 - fx/dfx;
-		FOR ( ; x1-x2>error; )
-			x1 := x2;
-			fx := x1*x1 - n;
-			dfx := 2.0*x1;
-			x2 := x1 - fx/dfx;
-		ENDFOR
+	WHILE (x1-x2 > error);
 
 		WRITE (x2);
 	END

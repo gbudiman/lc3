@@ -1,6 +1,5 @@
 PROGRAM test
 BEGIN
-	--PROTO INT main();
 	FUNCTION INT main()
 	BEGIN
 

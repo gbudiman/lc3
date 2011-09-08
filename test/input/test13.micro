@@ -5,11 +5,7 @@ BEGIN
 	FLOAT x,y,z;
 	INT h;
 	STRING s1 := "string";
-	
-	--PROTO INT main();
-	--PROTO INT function1();
-	--PROTO INT function2();
-	
+		
 	FUNCTION INT function1()
 	BEGIN
 	RETURN 35*45;
