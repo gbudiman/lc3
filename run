@@ -1,7 +1,7 @@
 #! /bin/bash
 if [$1 != ""]
 then
-	for i in {1..17}
+	for i in {1..18}
 	do
 		echo $i "===============";
 		java -cp lib/antlr.jar:classes Micro test/input/"test"$i".micro";
