@@ -1,11 +1,15 @@
 grammar MicroParser;
 @rulecatch {
 	catch (RecognitionException re) {
-		throw re;
+		System.out.println("Not Accepted\n");
+		System.exit(1);	
 	}
 }
 @header {
+	import java.util.Vector;
 	import java.util.LinkedList;
+	import java.util.Iterator;
+	import java.util.Collections;
 }
 @members {
 	private List<String> errors = new LinkedList<String>();
@@ -20,24 +24,75 @@ grammar MicroParser;
 	public int getErrorCount() {
 		return errors.size();
 	}
+
+	public List<mSymbol> symbolTable = new Vector<mSymbol>();
 }
 /* Program */
-program 	: 'PROGRAM' id 'BEGIN' pgm_body 'END';
+program 	: 'PROGRAM' id 'BEGIN' pgm_body 'END'
+{
+	System.out.println("Printing Global Symbol Table");
+	Iterator it = symbolTable.iterator();
+	while (it.hasNext()) {
+		mSymbol element = (mSymbol) it.next();
+		if ((element.getType()).equals("info")) {
+			System.out.println(element.getName());
+		}
+		else {
+			System.out.print("name: " + element.getName());
+			System.out.print(" type " + element.getType());
+			if ((element.getValue()).length() != 0) {
+				System.out.println(" value: " + element.getValue());
+			}
+			else {
+			System.out.println();
+			}
+		}
+	}
+};
 id		: IDENTIFIER;
 pgm_body	: decl func_declarations;
 decl 		: (string_decl | var_decl)*;
 /* Global String Declaration */
 //string_decl_list: (string_decl string_decl_tail)?;
-string_decl	: 'STRING' id ':=' str ';';
+string_decl	: 'STRING' id ':=' str ';'
+{
+	symbolTable.add(new mSymbol($id.text, "STRING", $str.text));
+};
 str		: STRINGLITERAL;
 string_decl_tail: string_decl string_decl_tail?;
 /* Variable Declaration */
 //var_decl_list	: var_decl var_decl_tail?;
-var_decl	: var_type id_list ';';
+var_decl	: var_type id_list ';' 
+{
+	List<mSymbol> reverseTable = new Vector<mSymbol>();
+	for (String id : $id_list.stringList) {
+		reverseTable.add(new mSymbol(id, $var_type.text));
+	}
+	Collections.reverse(reverseTable);
+	Iterator its = reverseTable.iterator();
+	while (its.hasNext()) {
+		symbolTable.add((mSymbol) its.next());
+	}
+	
+};
 var_type	: 'FLOAT' | 'INT';
 any_type	: var_type | 'VOID';
-id_list		: id id_tail;
-id_tail		: ',' id id_tail | ;
+id_list	returns [ List<String> stringList ]
+		: id id_tail 
+{
+	$stringList = $id_tail.stringList;
+	$stringList.add($id.text);
+};
+id_tail returns [ List<String> stringList ]
+	 	: ',' id tailLambda = id_tail 
+{
+	$stringList = $tailLambda.stringList;
+	$stringList.add($id.text);
+}
+		| 
+{
+	$stringList = new ArrayList();
+};
 var_decl_tail	: var_decl var_decl_tail?;
 /* Function Parameter List */
 param_decl_list : param_decl param_decl_tail;
@@ -45,7 +100,11 @@ param_decl	: var_type id;
 param_decl_tail	: ',' param_decl param_decl_tail | ;
 /* Function Delcarations */
 func_declarations: (func_decl func_decl_tail)?;
-func_decl	: 'FUNCTION' any_type id '(' param_decl_list? ')' 'BEGIN' func_body 'END';
+func_decl	: 'FUNCTION' any_type id 
+{
+	symbolTable.add(new mSymbol("Printing Symbol Table for " + $id.text, "info"));
+}
+		'(' param_decl_list? ')' 'BEGIN' func_body 'END' ;
 func_decl_tail	: func_decl*;
 func_body	: decl stmt_list;
 /* Statement List */

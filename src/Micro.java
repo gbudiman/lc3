@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 import org.antlr.runtime.*;
 
 public class Micro {
@@ -26,21 +27,22 @@ public class Micro {
         }*/
 
 	// Step2 code
-	try {
-		MicroParserLexer lex = new MicroParserLexer(new ANTLRFileStream(args[0]));
-		CommonTokenStream tokens = new CommonTokenStream(lex);
-		MicroParserParser parser = new MicroParserParser(tokens);
+	//try {
+	MicroParserLexer lex = new MicroParserLexer(new ANTLRFileStream(args[0]));
+	CommonTokenStream tokens = new CommonTokenStream(lex);
+	MicroParserParser parser = new MicroParserParser(tokens);
 
-		parser.program();
+	parser.program();
+		/*parser.program();
 		if (parser.getErrorCount() > 0) {
 			System.out.println("Not accepted");
 		}
 		else {
 			System.out.println("Accepted");
-		}
-	} catch (RecognitionException t) {
+		}*/
+	//} catch (RecognitionException t) {
 		//System.out.print(t.line);
-		System.out.println("Not Accepted");
-	}
+		//System.out.println("Not Accepted");
+	//}
     }
 }

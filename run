@@ -4,11 +4,11 @@ then
 	for i in {1..18}
 	do
 		echo $i "===============";
-		java -cp lib/antlr.jar:classes Micro test/input/"test"$i".micro";
+		java -cp lib/antlr.jar:classes Micro test/"test"$i".micro";
 		more test/output/test"$i".parser;
 	done
 else
-	java -cp lib/antlr.jar:classes Micro test/input/$1".micro"
+	java -cp lib/antlr.jar:classes Micro test/$1".micro"
 	more test/output/"$1".parser
 fi
 #echo "Input: ";
