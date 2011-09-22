@@ -8,8 +8,10 @@ then
 		more test/output/test"$i".parser;
 	done
 else
-	java -cp lib/antlr.jar:classes Micro test/$1".micro"
-	more test/output/"$1".parser
+	java -cp lib/antlr.jar:classes Micro test/$1".micro" > test/test.out
+	more test/test.out
+	diff -b -B test/test.out test/"$1".table
+	rm test/test.out
 fi
 #echo "Input: ";
 #more test/input/"$1".micro;

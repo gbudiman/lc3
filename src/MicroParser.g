@@ -10,6 +10,7 @@ grammar MicroParser;
 	import java.util.LinkedList;
 	import java.util.Iterator;
 	import java.util.Collections;
+	import java.util.ArrayList;
 }
 @members {
 	private List<String> errors = new LinkedList<String>();
@@ -25,13 +26,14 @@ grammar MicroParser;
 		return errors.size();
 	}
 
+	public List<msTable> masterTable = new Vector<msTable>();
 	public List<mSymbol> symbolTable = new Vector<mSymbol>();
+	public msTable tms = new msTable("__global");
 }
 /* Program */
 program 	: 'PROGRAM' id 'BEGIN' pgm_body 'END'
 {
-	System.out.println("Printing Global Symbol Table");
-	Iterator it = symbolTable.iterator();
+	/*Iterator it = symbolTable.iterator();
 	while (it.hasNext()) {
 		mSymbol element = (mSymbol) it.next();
 		if ((element.getType()).equals("info")) {
@@ -47,7 +49,34 @@ program 	: 'PROGRAM' id 'BEGIN' pgm_body 'END'
 			System.out.println();
 			}
 		}
+	}*/
+	//System.out.println("Global");
+	tms.attachTable(symbolTable);
+	masterTable.add(tms);
+
+	Iterator mti = masterTable.iterator();
+	while (mti.hasNext()) {
+		msTable cmte = (msTable) mti.next();
+		if (cmte.scope.equals("__global")) {
+			System.out.println("Printing Global Symbol Table");
+		}
+		else {
+			System.out.println("Printing Symbol Table for " + cmte.scope);
+		}
+		Iterator esti = cmte.symbolTable.iterator();
+
+		while (esti.hasNext()) {
+			mSymbol ese = (mSymbol) esti.next();
+			System.out.print("name: " + ese.getName());
+			System.out.print(" type " + ese.getType());
+			if (ese.getValue() != "") {
+				System.out.print(" value: " + ese.getValue());
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
+
 };
 id		: IDENTIFIER;
 pgm_body	: decl func_declarations;
@@ -56,6 +85,7 @@ decl 		: (string_decl | var_decl)*;
 //string_decl_list: (string_decl string_decl_tail)?;
 string_decl	: 'STRING' id ':=' str ';'
 {
+	//System.out.println("string_decl returns " + $id.text);
 	symbolTable.add(new mSymbol($id.text, "STRING", $str.text));
 };
 str		: STRINGLITERAL;
@@ -64,7 +94,7 @@ string_decl_tail: string_decl string_decl_tail?;
 //var_decl_list	: var_decl var_decl_tail?;
 var_decl	: var_type id_list ';' 
 {
-	List<mSymbol> reverseTable = new Vector<mSymbol>();
+	/*List<mSymbol> reverseTable = new Vector<mSymbol>();
 	for (String id : $id_list.stringList) {
 		reverseTable.add(new mSymbol(id, $var_type.text));
 	}
@@ -72,26 +102,40 @@ var_decl	: var_type id_list ';'
 	Iterator its = reverseTable.iterator();
 	while (its.hasNext()) {
 		symbolTable.add((mSymbol) its.next());
+	}*/
+	//Iterator sti = $id_list.stringList.iterator();
+	/*while (sti.hasNext()) {
+		String init = (String) sti.next();
+		//System.out.println("Popped: " + init);
+		symbolTable.add(new mSymbol(init, $var_type.text));
+	}*/
+	while (!$id_list.stringList.empty()) {
+		String t = $id_list.stringList.pop();
+		//System.out.println("popped: " + t );
+		symbolTable.add(new mSymbol(t, $var_type.text));
 	}
-	
+	//System.out.println("all popped");
 };
 var_type	: 'FLOAT' | 'INT';
 any_type	: var_type | 'VOID';
-id_list	returns [ List<String> stringList ]
+id_list	returns [ Stack<String> stringList ]
 		: id id_tail 
 {
 	$stringList = $id_tail.stringList;
-	$stringList.add($id.text);
+	$stringList.push($id.text);
+	//System.out.println("id_list returns " + $id.text);
 };
-id_tail returns [ List<String> stringList ]
+id_tail returns [ Stack<String> stringList ]
 	 	: ',' id tailLambda = id_tail 
 {
 	$stringList = $tailLambda.stringList;
-	$stringList.add($id.text);
+	$stringList.push($id.text);
+	//System.out.println("id_tail returns " + $id.text);
 }
 		| 
 {
-	$stringList = new ArrayList();
+	$stringList = new Stack<String>();
+	//System.out.println("id_tail returns null");
 };
 var_decl_tail	: var_decl var_decl_tail?;
 /* Function Parameter List */
@@ -102,7 +146,16 @@ param_decl_tail	: ',' param_decl param_decl_tail | ;
 func_declarations: (func_decl func_decl_tail)?;
 func_decl	: 'FUNCTION' any_type id 
 {
-	symbolTable.add(new mSymbol("Printing Symbol Table for " + $id.text, "info"));
+	Iterator fti = symbolTable.iterator();
+	while (fti.hasNext()) {
+		mSymbol init = (mSymbol) fti.next();
+		//System.out.println("before exiting, has " + init.getName());
+	}
+	//System.out.println("Function " + $id.text);
+	tms.attachTable(symbolTable);
+	masterTable.add(tms);
+	tms = new msTable($id.text);
+	symbolTable = new Vector<mSymbol>();
 }
 		'(' param_decl_list? ')' 'BEGIN' func_body 'END' ;
 func_decl_tail	: func_decl*;

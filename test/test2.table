@@ -1,0 +1,21 @@
+Printing Global Symbol Table
+name: a type INT
+name: b type INT
+name: c type INT
+name: x type INT
+name: y type INT
+name: z type INT
+name: h type FLOAT
+name: j type FLOAT
+name: k type FLOAT
+name: gg type INT
+name: tt type INT
+name: dummy type STRING value: "dummy"
+
+Printing Symbol Table for global
+
+Printing Symbol Table for Global
+
+Printing Symbol Table for main
+name: a type STRING value: ""
+name: xyz type INT

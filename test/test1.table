@@ -1,0 +1,16 @@
+Printing Global Symbol Table
+name: a type INT
+name: b type INT
+name: c type INT
+name: x type INT
+name: y type INT
+name: z type INT
+name: h type INT
+name: j type INT
+name: k type INT
+
+Printing Symbol Table for printout
+
+Printing Symbol Table for main
+name: a type STRING value: ""
+name: xyz type INT
